@@ -10,27 +10,24 @@ public class UserBean {
 	private String user_phone;
 	private String user_addr;
 	private String user_grade;
-	
-	private int userPurchase;	//회원 구매 내역 받을 변수
+	private int userPurchase;
 	
 	public UserBean() {
 	}
-	
-	public UserBean(String user_id) {
-		this.user_id = user_id;
-	}
-
-	public UserBean(String user_id, String user_pwd, String user_name, String user_email, String user_phone,
+	public UserBean(String user_id, String user_pwd, String user_name, String user_phone, String user_email,
 			String user_addr, String user_grade) {
 		this.user_id = user_id;
 		this.user_pwd = user_pwd;
 		this.user_name = user_name;
-		this.user_email = user_email;
 		this.user_phone = user_phone;
+		this.user_email = user_email;
 		this.user_addr = user_addr;
 		this.user_grade = user_grade;
 	}
-
+	public UserBean(String user_id) {
+		this.user_id = user_id;
+	}
+	
 	public String getUser_grade() {
 		return user_grade;
 	}
@@ -73,7 +70,6 @@ public class UserBean {
 	public void setUser_addr(String user_addr) {
 		this.user_addr = user_addr;
 	}
-
 	public int getUserPurchase() {
 		return userPurchase;
 	}

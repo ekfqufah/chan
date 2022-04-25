@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-
 public class UserDBBean {
 	private static UserDBBean instance = new UserDBBean();
 	
@@ -335,111 +334,111 @@ public class UserDBBean {
 	}
 	
 	// 탈퇴시킨 회원을 확인하는 메서드 - 0422 진용 
-	public UserBean defineUserId(String u_id) throws SQLException {
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-		Connection conn = null;
-		
-		String sql = "SELECT user_id, user_grade FROM user_table WHERE user_id = ?"; 
-		UserBean user = null;
-		
-		try {
-			conn = getConnection();
-			conn.prepareStatement(sql);
-			pstmt.setString(1, u_id);
-			rs = pstmt.executeQuery();
+		public UserBean defineUserId(String u_id) throws SQLException {
+			ResultSet rs = null;
+			PreparedStatement pstmt = null;
+			Connection conn = null;
 			
-			if (rs.next()) {
-				String id = rs.getString("user_id");
-				user = new UserBean(id);
-				user.setUser_grade(rs.getString("user_grade"));
-			}
+			System.out.println("????"+u_id);
+			String sql = "SELECT user_id, user_grade FROM user_table WHERE user_id = ?"; 
+			UserBean user = null;
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(rs!=null) rs.close();
-			if(pstmt!=null) pstmt.close();
-			if(conn!=null) conn.close();
-		}
-		
-		return user;
-	}
-	
-	public int deleteUser(String delete_uid) throws SQLException {
-		ResultSet rs = null;
-		PreparedStatement pstmt = null;
-		Connection conn = null;
-		String sql = "UPDATE user_table SET user_pwd = '-1', user_name = '-탈퇴', user_email = 'unknown', "
-				+ "user_phone = '000-0000-0000', user_addr='unknown', user_grade = 'D', WHERE user_id = ?";
-		int isDelete = -1;
-
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, delete_uid);
-			isDelete = pstmt.executeUpdate();
-			System.out.println("@@@@@@@ 탈퇴 처리(" + isDelete + "): " + delete_uid);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(rs!=null) rs.close();
-			if(pstmt!=null) pstmt.close();
-			if(conn!=null) conn.close();
-		}
-
-		return isDelete;
-	}
-	
-	// 회원 목록을 불러오는 메서드 - 0422 진용
-	public ArrayList<UserBean> listUsers() throws SQLException {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		ArrayList<UserBean> uList = new ArrayList<UserBean>();
-		String sql ="SELECT "
-				+ "user_id, user_name, user_phone, user_email, user_addr, user_grade, u_count "
-				+ "FROM user_table U, (SELECT user_id, COUNT(*) AS U_COUNT FROM user_order GROUP BY user_id) O "
-				+ "WHERE U.user_id = O.user_id(+) ORDER BY user_grade DESC, user_id DESC";
-		
-		try {
-			conn = getConnection();
-			pstmt = conn.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				String userId = rs.getString("user_id");
-				String userName = rs.getString("user_name");
-				String userPhone = rs.getString("user_phone");
-				String userEmail = rs.getString("user_email");
-				String userAddr = rs.getString("user_addr");
-				String userGrade = rs.getString("user_garde");
-				int userPurchase = rs.getInt("u_count");
-
-				UserBean user = new UserBean( //
-						userId, //
-						"-1", // userPassword,
-						userName, //
-						userPhone, //
-						userEmail, //
-						userAddr, //
-						"D" // userGrade
-						);
+			try {
+				conn = getConnection();
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, u_id);
+				rs = pstmt.executeQuery();
 				
-				user.setUserPurchase(userPurchase);
-
-				uList.add(user);
+				if (rs.next()) {
+					String id = rs.getString("user_id");
+					user = new UserBean(id);
+					user.setUser_grade(rs.getString("user_grade"));
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(rs!=null) rs.close();
-			if(pstmt!=null) pstmt.close();
-			if(conn!=null) conn.close();
+			
+			return user;
 		}
+		
+		public int deleteUser(String delete_uid) throws SQLException {
+			ResultSet rs = null;
+			PreparedStatement pstmt = null;
+			Connection conn = null;
+			String sql = "UPDATE user_table SET user_pwd = '-1', user_name = '-탈퇴', user_phone = '000-0000-0000', "
+					+ "user_email = 'unknown', user_addr='unknown', user_grade = 'D' WHERE user_id = ?";
+			int isDelete = -1;
 
-		return uList;
-	}
-	
+			try {
+				conn = getConnection();
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, delete_uid);
+				isDelete = pstmt.executeUpdate();
+				System.out.println("@@@@@@@ 탈퇴 처리(" + isDelete + "): " + delete_uid);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			}
+
+			return isDelete;
+		}
+		
+		// 회원 목록을 불러오는 메서드 - 0422 진용
+		public ArrayList<UserBean> listUsers() throws SQLException {
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			ArrayList<UserBean> uList = new ArrayList<UserBean>();
+			String sql ="SELECT "
+					+ "u.user_id, user_name, user_phone, user_email, user_addr, user_grade, o_count "
+					+ "FROM user_table u, (SELECT user_id, COUNT(*) AS o_count FROM user_order GROUP BY user_id) o "
+					+ "WHERE u.user_id = o.user_id(+) ORDER BY user_grade DESC, u.user_id DESC";
+			
+			try {
+				conn = getConnection();
+				pstmt = conn.prepareStatement(sql);
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					String userId = rs.getString("user_id");
+					String userName = rs.getString("user_name");
+					String userPhone = rs.getString("user_phone");
+					String userEmail = rs.getString("user_email");
+					String userAddr = rs.getString("user_addr");
+					String userGrade = rs.getString("user_grade");
+					int userPurchase = rs.getInt("o_count");
+
+					UserBean user = new UserBean( //
+							userId, //
+							"-1", // userPassword,
+							userName, //
+							userPhone, //
+							userEmail, //
+							userAddr, //
+							userGrade // 
+							);
+					
+					user.setUserPurchase(userPurchase);
+
+					uList.add(user);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();
+			}
+
+			return uList;
+		}
 }
 
