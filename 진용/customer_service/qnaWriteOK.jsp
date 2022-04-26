@@ -10,6 +10,8 @@
 <%@page import="java.sql.Timestamp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<jsp:useBean id="Board" class="notice.QnABean"></jsp:useBean>
+<jsp:setProperty property="*" name="Board"/>
 <% request.setCharacterEncoding("UTF-8"); %>
 <%
 	String path = request.getRealPath("upload"); //사용할 업로드 폴더 지정
@@ -52,13 +54,18 @@
 
 	board.setB_date(new Timestamp(System.currentTimeMillis()));
 	
+	int b_ref = Integer.parseInt(multi.getParameter("b_ref"));
+	board.setB_ref(b_ref);
+	int b_id = Integer.parseInt(multi.getParameter("b_id"));
+	board.setB_ref(b_id);
+	
 	if(file != null){
 		board.setB_fname(file);
 		board.setB_fsize(fileSize);
 		board.setB_rfname(oriFile);
 	}
 	
-	if (multi.getParameter("b_secret") == null || (isAdmin == false)) {
+	if (multi.getParameter("b_secret") == null || (isAdmin && b_ref == 0)) {
 		//공개글
 		board.setB_secret("0");
 	} else {

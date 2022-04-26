@@ -1,3 +1,4 @@
+<%@page import="java.sql.Timestamp"%>
 <%@page import="notice.QnABean"%>
 <%@page import="login.UserDBBean"%>
 <%@page import="notice.QnADBBean"%>
@@ -41,7 +42,11 @@
 		b_id = Integer.parseInt(request.getParameter("b_id"));
 		board = ndb.getBoard(b_id, true);
 		isMe = board.getU_id().equals(user_id);
-	
+		int b_view =0;
+		String b_title="", b_content = ""; 
+		Timestamp b_date= null;
+
+
 	
 		if (board == null) {
 		%>
@@ -102,13 +107,13 @@
 			<tr height="30">
 				<td colspan="4" align="right">
 					<% if (isAdmin) { %>
-						<input type="button" value="답글" onClick="location.href='qnaWrite.jsp?b_id=<%= b_id %>'" style="cursor:pointer;">
+						<input type="button" value="답글" onClick="location.href='qnaWrite.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>'" style="cursor:pointer;">
 					<% } %>
 					<% if (isMe || isAdmin) { %>
-						<input type="button" value="수정" onClick="location.href='qnaEdit.jsp?b_id=<%= b_id %>'" style="cursor:pointer;">
-						<input type="button" value="삭제" onClick="deleteOK()" style="cursor:pointer;">
-					<% } %>
-					<input type="button" value="목록" onClick="location.href='qnaList.jsp?pageNum=<%= pageNum %>'" style="cursor:pointer;">
+						<input type="button" value="수정" onClick="location.href='qnaEdit.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>'" style="cursor:pointer;">
+						<input type="button" value="삭제" onClick="location.href='qnaDelete.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>'" style="cursor:pointer;">
+					<% 	} %>
+					<input type="button" value="목록" onClick="location.href='qnaList.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>'" style="cursor:pointer;">
 				</td>
 			</tr>
 		</table>   

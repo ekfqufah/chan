@@ -14,13 +14,13 @@ public class UserBean {
 	
 	public UserBean() {
 	}
-	public UserBean(String user_id, String user_pwd, String user_name, String user_phone, String user_email,
+	public UserBean(String user_id, String user_pwd, String user_name, String user_email, String user_phone,
 			String user_addr, String user_grade) {
 		this.user_id = user_id;
 		this.user_pwd = user_pwd;
 		this.user_name = user_name;
-		this.user_phone = user_phone;
 		this.user_email = user_email;
+		this.user_phone = user_phone;
 		this.user_addr = user_addr;
 		this.user_grade = user_grade;
 	}

@@ -15,20 +15,20 @@
         user_id = (String) session.getAttribute("user_id");
     }
 
-	if (request.getParameter("b_id") != null) {	//답글일 시 제목앞에 [RE] 추가
+	if (request.getParameter("b_id") != null) {	
 		b_id = Integer.parseInt(request.getParameter("b_id"));
 	}
     
 	QnADBBean qdb = QnADBBean.getInstance();
 	QnABean board = qdb.getBoard(b_id, false);
+	UserDBBean udb = new UserDBBean();
 	
-	if(board != null){
+	if(board != null){ //board가 널값이 아니면(답변글이면)
 		b_title = board.getB_title();
 		b_ref = board.getB_ref();
 		b_step = board.getB_step();
 		b_level = board.getB_level();
 	}
-		UserDBBean udb = new UserDBBean();
 %>
 <html>
 <head>
@@ -40,6 +40,11 @@
 	<h4>Write</h4>
 	<table class="table">
 		<form method="post" action="qnaWriteOK.jsp" name="boardForm" enctype="multipart/form-data">
+				<input type="hidden" name="b_id" value="<%= b_id %>">
+				<input type="hidden" name="b_ref" value=<%= b_ref %>>
+				<input type="hidden" name="b_step" value="<%= b_step %>">
+				<input type="hidden" name="b_level" value="<%= b_level %>">
+				<input type="hidden" name="u_id" value=<%= user_id %>>
 		<thead>
 			<tr height="30px">
 				<td width="60">제&nbsp;&nbsp;목</td>
@@ -47,14 +52,15 @@
 				<%
 					if(b_id == 0){
 				%>
-						<input class="form-control" name="b_title" type="text" size="55" value="<%= b_title %>"></td>
+						<input class="form-control" name="b_title" type="text" size="55" value="<%= b_title %>">
 				<% 	
 					} else {
 				%>	
-						<input class="form-control" name="b_title" type="text" size="55" value="[RE]: <%= b_title %>"></td>
+						<input class="form-control" name="b_title" type="text" size="55" value="[RE]: <%= b_title %>">
 				<% 	
 					}
 				%>
+				</td>
 			</tr>
 		</thead>
 			<tr>
@@ -82,17 +88,12 @@
 		</tr>
 		<tr height="30">
 			<td colspan="4" align="right">
-				<input type="hidden" name="b_id" value="<%= b_id %>">
-				<input type="hidden" name="b_ref" value=<%= b_ref %>>
-				<input type="hidden" name="b_step" value="<%= b_step %>">
-				<input type="hidden" name="b_level" value="<%= b_level %>">
-				<input type="hidden" name="u_id" value=<%= user_id %>>
 				<% if (!udb.isAdmin(user_id) || b_ref != 0) { %>  <!-- 관리자와 작성자가 아니면 글 비공개 설정  -->
 					<label><input type="checkbox" name="b_secret" checked> 비공개</label>
 				<% } %>
 				<input type="button" onClick="doWrite()" value="글쓰기">
 				<input type="reset" value="다시쓰기">
-				<input type="button" value="목록" onClick="location.href='qnaList.jsp'">
+				<input type="button" value="목록" onClick="location.href='qnaList.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>'">
 			</td>
 		</tr>
 		</form>
