@@ -49,15 +49,22 @@
 
     <script src="board.js" type="text/javascript"></script> 
 <style> 
-	#container { 
-		width: 80%; 
+	#container, #ntc, #navi { 
+		min-width: 1100px; 
+		max-width: 1280px; 
 		margin: 0 auto; /* 가로로 중앙에 배치 */ 
-		padding-top: 10%;
+		font-family: "Malgun Gothic",돋음;
+	}
+	#ntc{
+		padding-top: 3%;
 	} 
 	p{
 		font-size: small;
 	} 
 	#list { 
+		text-align: left; 
+	} 
+	#title { 
 		text-align: left; 
 	} 
 	#write { 
@@ -79,12 +86,21 @@
 		text-align: center; 
 	} 
 </style>
-
+ <jsp:include page="../main/mainHeader.jsp"></jsp:include>
 </head>
 <body>
-<div id="container">
+<div id="navi" style= "--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+	<ul class="breadcrumb" style="float: right;">
+		<li class="breadcrumb-item"><a href="../main/main.jsp">Home</a></li>
+		<li class="breadcrumb-item"><a href="../customer_service/customer_service.jsp">Customer Service</a></li>
+		<li class="breadcrumb-item active">Q & A</li>
+	</ul>
+</div>
+<div id="ntc">
 	<h4 id="list">Q & A</h4>
-	<p>사이즈 문의, 입금 배송 문의,코디 문의, 이벤트 문의 등 모든 궁금한 사항들을 남겨주세요~</p>
+	<p>사이즈 문의, 입금 배송 문의, 코디 문의, 이벤트 문의 등 모든 궁금한 사항들을 남겨주세요~</p>
+</div>
+<div id="container">
 	<table class="table table-borderless table-bordered table-hover"> 
 		<thead>
 			<tr>
@@ -187,8 +203,8 @@
 		<tr>
 			<td colspan="8" id="write">
 				<% if (user_id != null) { %> <!-- 회원일 경우 글쓰기 가능  -->
-				<input type="button"
-					value="글쓰기" onClick="canWrite('<%= user_id == null ? "" : user_id %>')"
+				<input type="button" class="btn btn-dark"
+					value="&nbsp;&nbsp;&nbsp;글쓰기&nbsp;&nbsp;&nbsp;" onClick="canWrite('<%= user_id == null ? "" : user_id %>')"
 					style="cursor: pointer;">
 				<% } %>
 			</td>
@@ -208,4 +224,5 @@
 </div>  
 		<%= QnABean.pageNumber(3) %>
 </body>
+<jsp:include page="../main/mainfooter.jsp"></jsp:include>
 </html>

@@ -56,6 +56,10 @@
 	
 	int b_ref = Integer.parseInt(multi.getParameter("b_ref"));
 	board.setB_ref(b_ref);
+	int b_step = Integer.parseInt(multi.getParameter("b_step"));
+	board.setB_ref(b_ref);
+	int b_level = Integer.parseInt(multi.getParameter("b_level"));
+	board.setB_ref(b_ref);
 	int b_id = Integer.parseInt(multi.getParameter("b_id"));
 	board.setB_ref(b_id);
 	
