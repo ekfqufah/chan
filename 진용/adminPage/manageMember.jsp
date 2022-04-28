@@ -1,24 +1,20 @@
-<%@page import="notice.NoticeDBBean"%>
-<%@page import="notice.NoticeBean"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@page import="login.UserBean"%>
+<%@page import="login.UserDBBean"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.ArrayList"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-	String pageNum = request.getParameter("pageNum");
-	
-	String user_id = (String)session.getAttribute("user_id");
-	if(session.getAttribute("user_id") == null){
-		response.sendRedirect("../login/login.jsp");
-	}
-
-	int n_num = Integer.parseInt(request.getParameter("n_num"));
-	NoticeDBBean db = NoticeDBBean.getInstance();
-	NoticeBean board = db.getBoard(n_num, false);
+    String user_id = null;
+    if (session.getAttribute("user_id") != null) {
+    	user_id = (String) session.getAttribute("user_id");
+    }
 %>
+<!doctype html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-	<script src="notice.js" type="text/javascript"></script>
+<title>회원관리</title>
+<script src="notice.js" type="text/javascript"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
@@ -27,12 +23,6 @@
     <link rel="stylesheet" href="css/bootstrap-5.1.3-dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="../fontstyle/fontello-4581031e/css/fontello.css">
     <link rel="stylesheet" href="../css/jquery.bxslider.css">
-<!-- 서머노트를 위해 추가해야할 부분 시작 -->
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
-  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-  <script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
-<!-- 서머노트를 위해 추가해야할 부분 끝 -->
-	<script src="notice.js" type="text/javascript"></script>
 <style type="text/css">
 	/* body{font-size: small;} */
 	#scroll{
@@ -146,67 +136,135 @@
 	<nav aria-label="breadcrumb" style="float: right;">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="../main/main.jsp">Home</a></li>
-			<li class="breadcrumb-item">Board</li>
-			<li class="breadcrumb-item active" aria-current="page">NOTICE</li>
+			<li class="breadcrumb-item"><a href="../adminPage/adminPage.jsp">Admin page</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Manager Management</li>
 		</ol>
 	</nav>
 </div>
 </center>
 <!-- Breadcrumb 끝 -->
 
-	<br><br><br>
+<br><br><br>
 	<center>
-		<div class="table-responsive">
-			<div style="width:900px; padding-right: 700px; text-align: left;">
-					<p>
-						<h2>Notice</h2>
-						
-					</p>
-				</div>
-		<form name="reg_frm" method="post" action="notice_edit_ok.jsp?n_num=<%= n_num %>&pageNum=<%= pageNum %>">
-			<table class="table" style="width: 900px;">
-			 	<tr>
-					<td style="width: 120px;">NAME</td>
-					<td>
-						<input type="text" name="user_id" size="10" maxlength="20" value="<%= user_id %>" class="form-control form-control-sm" style="width: 200px;">
-					</td>
-				</tr> 
-				<tr>
-					<td style="width: 120px;">SUBJECT</td>
-					<td>
-						<input type="text" name="n_title" size="55" maxlength="80" value="<%= board.getN_title() %>" class="form-control form-control-sm">
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<textarea rows="10" cols="65" name="n_content" class="summernote" style="height: 500px">
-							<%= board.getN_content() %>
-						</textarea>
-					</td>
-				</tr>
-				<tr>
-					<td style="width: 120px;">PASSWARD</td>
-					<td>
-						<input type="password" name="n_pwd" size="12" maxlength="12" class="form-control form-control-sm" style="width: 200px;">
-					</td>
-				</tr>
-			</table>
-			<div style="width: 900px;">
-						<button style="float: left;" class="btn btn-outline-dark" onclick="check_ok()">글수정</button>
-						<input style="float: right;" class="btn btn-outline-dark" type="button" value="글목록" onclick="location.href='notice_list.jsp?pageNum=<%= pageNum %>'">
-						<input style="float: right;" class="btn btn-outline-dark" type="reset" value="다시작성">
-			</div>
-			<br><br><br><br>
-		</form>
-		</div>
-	</center>
-	<jsp:include page="../main/mainfooter.jsp"></jsp:include>
-	<script>
-$('.summernote').summernote({
-	  height: 500,
-	  lang: "ko-KR"
-	});
+		<div class="table-responsive" >
+		<div style="width:900px; padding-right: 700px; text-align: left;">
+		<p>
+		<h2>Manager&nbsp;Management</h2>
+		진상 바로 손절치기
+		</p>
+		</div>	
+	
+	<%
+		UserDBBean udb = null;
+		boolean isAdmin = false;
+		if (user_id == null) {
+	%>
+		<script>
+			alert("잘못된 접근입니다.");
+			location.href = "../main/main.jsp";
+		</script>
+	<%	
+		} else {
+			udb = new UserDBBean();
+			isAdmin = udb.isAdmin(user_id);
+		}
+	
+		if (!isAdmin) {
+	%>
+		<script>
+			alert("잘못된 접근입니다.");
+			location.href = "../main/main.jsp";
+		</script>
+	<%
+		} else {
+	%>
+<script>
+function delete_check_admin(u_id) {
+	if(confirm("정말 탈퇴 처리하시겠습니까?") == true) {
+		location.href = "deleteMember.jsp?delete_uid=" + u_id;
+	} else {
+		location.reload();
+	}
+}
 </script>
-
+</center>
+	<center>
+		<table class="table" style="width: 900px;">
+			<tr>
+				<th>User ID</th>
+				<th>NAME</th>
+				<th>CONTACT</th>
+				<th>E-MAIL</th>
+				<th>ADDRESS</th>
+				<th style="text-align: center;">ORDER</th>
+				<th style="text-align: center;">EXIT</th>
+			</tr>
+		<tbody>
+			<%	
+				ArrayList<UserBean> uList = udb.listUsers();
+				for (UserBean user : uList) {
+					String u_id = user.getUser_id();
+					if (udb.isAdmin(u_id)) {
+			%>
+				<tr style="font-size: small; background-color: aqua;">
+			<%				
+					} else if (udb.defineUserId(u_id).getUser_grade().equals("D")) {
+			%>
+				<tr style="font-size: small; background-color: grey;">
+			<%			
+					} else {
+			%>
+				<tr style="font-size: small;">
+			<%
+					}
+			%>
+					<td><%= u_id %></td>
+					<td><%= user.getUser_name() %></td>
+					<td><%= user.getUser_email() %></td>
+					<td><%= user.getUser_phone() %></td>
+					<td><%= user.getUser_addr() %></td>
+					<td style="text-align: center;"><%= user.getUserPurchase() %></td>
+					<td style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-x-fill" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z"/>
+</svg>
+					&nbsp;&nbsp;<input type="button" onClick="delete_check_admin('<%= user.getUser_id() %>')" value="탈퇴" class="btn btn-outline-dark btn-sm"></td>
+				</tr>	
+			<%					
+				}
+		}
+			%>
+			</tbody>
+		</table>
+	</div>
+		</center>
+		<!-- 검색창 시작 -->
+<br><br>
+<center>
+<div style="width: 1100px; padding-left: 100px;">
+<table style="float: left;">
+	<tr>
+		<td width="100px;">
+			<select class="form-select" aria-label="Default select example">
+			  <option selected>아이디</option>
+			  <option value="1">이름</option>
+			  <option value="2">연락처</option>
+			  <option value="3">이메일</option>
+			  <option value="3">주소</option>
+			</select>
+		</td>
+		<td>
+			<input type="search" class="form-control">
+		</td>
+		<td>
+			<button type="button" class="btn btn-outline-secondary">검색</button>
+		</td>
+	</tr>
+</table>
+</div>
+</center>
+<!-- 검색창 끝 -->
+<br><br><br><br><br><br><br><br>
+	
+	<jsp:include page="../main/mainfooter.jsp"></jsp:include>
 </body>
 </html>

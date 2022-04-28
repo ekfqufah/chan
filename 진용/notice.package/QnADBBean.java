@@ -136,7 +136,7 @@ public class QnADBBean {
 				count++;
 			}
 			
-			String sql = "SELECT * FROM qna_board order by b_ref desc, b_step asc, b_id desc";
+			String sql = "SELECT * FROM qna_board order by b_ref desc, b_step asc";
 			pstmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = pstmt.executeQuery();
 			
@@ -211,7 +211,6 @@ public class QnADBBean {
 			} else {
 				number = 1;	//값이 없을 경우
 			}
-			
 			if (id != 0) {	//id가 0이 아니면 답글로 봄
 				String sql="UPDATE qna_board SET b_step = b_step+1"
 						+ " WHERE b_ref=? and b_step > ?";
@@ -244,9 +243,9 @@ public class QnADBBean {
 			pstmt.setString(7, board.getB_pwd());
 			pstmt.setTimestamp(8, board.getB_date());
 			pstmt.setString(9, board.getB_secret());
-			pstmt.setInt(10, board.getB_ref());
-			pstmt.setInt(11, board.getB_level());
-			pstmt.setInt(12, board.getB_step());
+			pstmt.setInt(10, ref);
+			pstmt.setInt(11, level);
+			pstmt.setInt(12, step);
 			pstmt.setString(13, board.getB_fname());
 			pstmt.setInt(14, board.getB_fsize());
 			pstmt.setString(15, board.getB_rfname());
