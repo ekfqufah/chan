@@ -47,7 +47,8 @@
 		min-width: 1100px; 
 		max-width: 1280px; 
 		margin: 0 auto; /* 가로로 중앙에 배치 */ 
-				font-family: "Malgun Gothic",돋음;
+		font-family: "Malgun Gothic",돋음;
+		font-size: 12px;
 	} 
 	#ntc{
 		padding-top: 3%;

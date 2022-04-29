@@ -18,7 +18,8 @@
 		min-width: 1100px; 
 		max-width: 1280px; 
 		margin: 0 auto; /* 가로로 중앙에 배치 */ 
-				font-family: "Malgun Gothic",돋음;
+		font-family: "Malgun Gothic",돋음;
+		font-size: 12px;
 	} 
 	#ntc{
 		padding-top: 3%;
@@ -164,7 +165,7 @@
 					<input type="button" value="&nbsp;&nbsp;&nbsp;목록&nbsp;&nbsp;&nbsp;" onClick="location.href='qnaList.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>'"  class="btn btn-secondary">
 				</td>
 				<td colspan="3" align="right">
-					<% if (isRef && isAdmin) { %>
+					<% if (isRef || isAdmin) { %>
 						<input type="button" value="&nbsp;&nbsp;&nbsp;답글&nbsp;&nbsp;&nbsp;" onClick="location.href='qnaWrite.jsp?b_id=<%= b_id %>&pageNum=<%= pageNum %>'" class="btn btn-dark">
 					<% } %>
 					<% if (isMe || isAdmin) { %>
