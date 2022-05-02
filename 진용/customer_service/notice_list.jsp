@@ -28,6 +28,11 @@
 	Timestamp n_date;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	
+	String select = request.getParameter("pageChange");
+	boolean isAdPage = true;
+	if (select == null) {
+		isAdPage = false;
+	}
 %>
 <html>
 <head>
@@ -56,8 +61,9 @@
 </style>
 </head>
 <body>
+<% if(!isAdPage){ %>
 <jsp:include page="../main/mainHeader.jsp"></jsp:include>
-
+<% } %>
 
 
 <!-- Breadcrumb 시작 -->
@@ -134,7 +140,7 @@
 				%>
    		 </tr>
 </table>
-	<%  if(user_id!=null) {  //관리자 아이디로 접속할 때만 글쓰기 버튼 노출
+	<%  if(user_id!=null && !isAdPage) {  //관리자 아이디로 접속할 때만 글쓰기 버튼 노출
 	if(user_id.equals("admin")){	
 	%>
 	<table style="width: 1280px";>
@@ -230,8 +236,9 @@
     </div>
   </footer> -->
 </div>
+<% if(!isAdPage){ %>
 <jsp:include page="../main/mainfooter.jsp"></jsp:include>
-
+<% } %>
 </body>
 </html>
 

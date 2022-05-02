@@ -55,7 +55,7 @@
 	var pwd = prompt("비밀번호를 입력하세요.");
 	if(<%= board.getN_pwd() %> == pwd){
 		if(confirm("정말 글을 삭제하시겠습니까?") == true){
-			location.href = "notice_delete_ok.jsp?n_num="+<%= board.getN_num() %>+"&pageNum="<%= pageNum %>;
+			location.href = "notice_delete_ok.jsp?n_num=<%= board.getN_num() %>&pageNum=<%= pageNum %>";
 		}
 	} else {
 		alert("비밀번호가 맞지 않습니다.");

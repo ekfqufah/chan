@@ -29,14 +29,11 @@
 %>
 <%
 	QnADBBean qnaDB = QnADBBean.getInstance();
-	ArrayList<QnABean> boards = qnaDB.getList(pageNum);
+	ArrayList<QnABean> boards = qnaDB.getAdminBoardList(user_id);
 	
 	UserDBBean udb = new UserDBBean();
 	boolean isAdmin = udb.isAdmin(user_id);
 	
-	int n_num=0, n_hit=0;
-	String n_title, n_content;
-	Timestamp n_date;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 	
 
@@ -90,9 +87,6 @@
 		text-align: center; 
 	} 
 </style>
-<% if(!isAdPage){ %>
- <jsp:include page="../main/mainHeader.jsp"></jsp:include>
- <% } %>
 </head>
 <body>
 <div id="navi" style= "--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -102,12 +96,6 @@
 		<li class="breadcrumb-item active">Q & A</li>
 	</ul>
 </div>
-<% if(!isAdPage){ %>
-<div id="ntc">
-	<h4 id="list">Q & A</h4>
-	<p>사이즈 문의, 입금 배송 문의, 코디 문의, 이벤트 문의 등 모든 궁금한 사항들을 남겨주세요~</p>
-</div>
-<% } %>
 <div id="container">
 	<table class="table table-hover"> 
 			<tr>
@@ -120,48 +108,12 @@
 				<td width="80px">첨부파일</td>
 				<td width="90px">비공개</td>
 			</tr>
-			<% //공지사항 3줄 불러오기	
-			for(int i=0; i<boards.size(); i++){
-				
-				if(i<3){
+			<tr>			
+		    <%
+		    	for(int i=0; i<boards.size(); i++){
 					QnABean list = boards.get(i);
-					n_num = list.getN_num();
-					n_title = list.getN_title();
-					n_content = list.getN_content();
-					if(n_num == 0) {
-						continue;
-					}
+					boolean isMine = false;
 			%>
-			<tr bgcolor="#F7F7F7">
-				<td> 공지 </td>
-				<td> &nbsp; </td>
-				<td id="title">
-					<a href="notice_show.jsp?n_num=<%= n_num %>&pageNum=<%= pageNum %>">
-						<%= n_title %>
-					</a>
-				</td>
-				<td>
-					<%  if(user_id!=null) { 
-							if(user_id.equals("admin")){	
-					%>
-							<%= user_id %>	
-					<% 	}}else {%>
-							admin
-					<% }%>
-				</td>
-				<td> &nbsp; </td>
-				<td> &nbsp; </td>
-				<td> &nbsp; </td>
-				<td> &nbsp; </td>
-			</tr>
-						
-			<tr>
-			    <%
-					} else {
-						QnABean list = boards.get(i);
-						boolean isMine = false;
-				%>
-				
 				<td> <%= list.getB_id() %> </td>
 				<td> <%= list.getB_category() %> </td>
 				<td id="title"> <!-- 답변글일 경우 들여쓰기 후 이미지 표시 -->
@@ -172,7 +124,7 @@
 				<% 		} %>
 					<img src='../images/outline_subdirectory_arrow_right_black_24dp.png'>
 				<% 	}	%>
-					<a href="qnaShow.jsp?b_id=<%= list.getB_id() %>&pageNum=<%= pageNum %>">
+					<a href="?pageChange=../customer_service/qnaShow.jsp?b_id=<%= list.getB_id() %>&pageNum=<%= pageNum %>">
 						<%= list.getB_title() %> 
 					</a>
 				</td>
@@ -201,34 +153,21 @@
 				<% 	} %>	
 			</tr>
 		<% 			 
-			}
 		}	
 		%>
-		<tr>
-			<td colspan="8" id="write">
-				<% if (user_id != null) { %> <!-- 회원일 경우 글쓰기 가능  -->
-				<input type="button" class="btn btn-dark"
-					value="&nbsp;&nbsp;&nbsp;글쓰기&nbsp;&nbsp;&nbsp;" onClick="canWrite('<%= user_id == null ? "" : user_id %>')"
-					style="cursor: pointer;">
-				<% } %>
-			</td>
-		</tr>
 	</table>      
 	<div > 
 	<nav id="paging"> 
 		<ul class="pagination justify-content-center"> 
 			<li class="page-item"><a class="page-link" href="#">이전</a></li> 
-			<li class="page-item"><a class="page-link" href="qnaList.jsp?pageNum=1">1</a></li> 
-			<li class="page-item"><a class="page-link" href="qnaList.jsp?pageNum=2">2</a></li> 
-			<li class="page-item"><a class="page-link" href="qnaList.jsp?pageNum=3">3</a></li> 
+			<li class="page-item"><a class="page-link" href="?pageChange=qnaAnswerList.jsp?pageNum=1">1</a></li> 
+			<li class="page-item"><a class="page-link" href="?pageChange=qnaAnswerList.jsp?pageNum=2">2</a></li> 
+			<li class="page-item"><a class="page-link" href="?pageChange=qnaAnswerList.jsp?pageNum=3">3</a></li> 
 			<li class="page-item"><a class="page-link" href="#">다음</a></li> 
 		</ul> 
 	</nav>
 	</div> 
 </div>  
 </body>
-<% if(!isAdPage){ %>
-<jsp:include page="../main/mainfooter.jsp"></jsp:include>
-<% } %>
 </html>
 <% QnABean.pageNumber(3); %>

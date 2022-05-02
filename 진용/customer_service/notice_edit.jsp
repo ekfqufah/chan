@@ -13,8 +13,16 @@
 	int n_num = Integer.parseInt(request.getParameter("n_num"));
 	NoticeDBBean db = NoticeDBBean.getInstance();
 	NoticeBean board = db.getBoard(n_num, false);
+	
+	String select = request.getParameter("pageChange");
+	boolean isAdPage = true;
+	if (select == null) {
+		isAdPage = false;
+	}
 %>
+<% if(!isAdPage){ %>
 <jsp:include page="../main/mainHeader.jsp"></jsp:include>
+<% } %>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -109,7 +117,9 @@
 		</form>
 		</div>
 	</center>
+<% if(!isAdPage){ %>
 	<jsp:include page="../main/mainfooter.jsp"></jsp:include>
+<% } %>
 	<script>
 $('.summernote').summernote({
 	  height: 500,

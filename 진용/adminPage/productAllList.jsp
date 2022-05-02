@@ -76,13 +76,23 @@ main{
 		</div>
 </nav>
  -->
-
+	<br><br><br>
+		<div style="width:900px; padding-right: 700px; text-align: left;">
+		<p>
+		<h2>Products&nbsp;List</h2>
+		</p>
+		</div>
 
 	<main >
  <%
+		 	String pageNum = request.getParameter("pageNum");
+			
+			if(pageNum == null){
+				pageNum = "1";
+			}
 			int j = 0;
 			GoodsDBBean productdb = new GoodsDBBean();
-         	ArrayList<GoodsBean> productListArr = productdb.getProductlist();
+         	ArrayList<GoodsBean> productListArr = productdb.getProductlist(pageNum);
          	ArrayList<GoodsBean> ProductImgListArr  =  productdb.getProductimg(productListArr);
         	
 %>
@@ -156,9 +166,14 @@ main{
 %>
 				</tbody>
 	     	</table>
+		     	<div style="margin: auto;  width: 300px; text-align: center;"> 
+				 		<ul class="pagination justify-content-center"> 
+				 			<%= GoodsBean.pageNumer(4,"All",null) %>
+			 			</ul> 
+			 		</div>
      	</div>
-	
 	</main>
+	
 	<%-- <jsp:include page="../main/mainfooter.jsp"></jsp:include> --%>
 </body>
 </html>

@@ -130,8 +130,7 @@ function product_check_ok(){
 	<div class="table-responsive" >
 		<div style="width:900px; padding-right: 700px; text-align: left;">
 		<p>
-		<h2>Product</h2>
-		상품 등록
+		<h2>Listing&nbsp;Products</h2>
 		</p>
 		</div>	
 <form   name="product_frm" action="productAddOK.jsp" method="post" enctype="multipart/form-data">

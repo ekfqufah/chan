@@ -7,8 +7,8 @@
 <%	
 	String pageNum = request.getParameter("pageNum");
 	
-	int b_id = 0, b_ref=1, b_step=0, b_level=0;
-	String b_title="";
+	int b_id=0, b_ref=1, b_step=0, b_level=0;
+	String b_title="", b_anschk="";
 	
     String user_id = null;
     if (session.getAttribute("user_id") != null) {
@@ -27,6 +27,13 @@
 		b_ref = board.getB_ref();
 		b_step = board.getB_step();
 		b_level = board.getB_level();
+		b_anschk = board.getB_anschk();
+	}
+	
+	String select = request.getParameter("pageChange");
+	boolean isAdPage = true;
+	if (select == null) {
+		isAdPage = false;
 	}
 %>
 <html>
@@ -63,7 +70,9 @@
  	a:visited { color: gray; text-decoration: none;}
  	a:hover { color: blue; text-decoration: underline;}
 </style>
+<% if(!isAdPage){ %>
 <jsp:include page="../main/mainHeader.jsp"></jsp:include>
+<% } %>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<script src="board.js" type="text/javascript"></script>    
@@ -76,10 +85,12 @@
 			<li class="breadcrumb-item active">Q & A</li>
 		</ul>
 	</div>
+	<% if(!isAdPage){ %>
 	<div id="ntc">
 		<h4 id="list">Q & A</h4>
 		<p>사이즈 문의, 입금 배송 문의, 코디 문의, 이벤트 문의 등 모든 궁금한 사항들을 남겨주세요~</p>
 	</div>  
+	<% } %>
 	<div id="container">
 		<table class="table">
 			<form method="post" action="qnaWriteOK.jsp" name="boardForm" enctype="multipart/form-data">
@@ -87,6 +98,7 @@
 					<input type="hidden" name="b_ref" value=<%= b_ref %>>
 					<input type="hidden" name="b_step" value="<%= b_step %>">
 					<input type="hidden" name="b_level" value="<%= b_level %>">
+					<input type="hidden" name="b_anschk" value="<%= b_anschk %>">
 				<tr>
 					<td style="padding-right: 40px">SUBJECT</td>
 					<td>
@@ -120,7 +132,7 @@
 					</td>
 				</tr>
 			<tr>
-				<td colspan="2"><textarea name="b_content" class="summernote" placeholder="내용을 입력하세요." rows="15" cols="160" style="height: 500px;"></textarea></td>
+				<td colspan="2"><textarea name="b_content" class="summernote" placeholder="내용을 입력하세요." rows="10" cols="65" style="height: 500px; width: 100%"></textarea></td>
 			</tr>
 			<tr>
 				<td>FILE</td>
@@ -155,7 +167,9 @@
 			</form>
 		</table>
 	</div>
+	<% if(!isAdPage){ %>
 	<jsp:include page="../main/mainfooter.jsp"></jsp:include>
+	<% } %>
 <script>
 $('.summernote').summernote({
 	  height: 500,

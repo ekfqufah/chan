@@ -65,15 +65,9 @@
         </div>
       </li><br>
       <li class="mb-1">
-        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#board-collapse" aria-expanded="false">
+        <button onclick="location.href='?pageChange=qnaAnswerList.jsp'" class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#board-collapse" aria-expanded="false">
           	QnA관리
         </button>
-        <div class="collapse" id="board-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-	       	<li><a href="?pageChange=../customer_service/qnaWrite.jsp" class="link-dark rounded">QnA 게시판 답하기</a></li>
-			<li><a href="?pageChange=../customer_service/qnaList.jsp" class="link-dark rounded">게시글 수정/삭제</a></li>
-          </ul>
-        </div>
       </li>
       <li class="border-top my-3"></li>
       <li class="mb-1">

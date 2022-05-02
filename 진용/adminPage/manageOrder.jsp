@@ -69,6 +69,12 @@ clear:both;
 		  </ul>
 		</nav>
 		
+		<br><br><br>
+		<div style="width:900px; padding-right: 700px; text-align: left;">
+		<p>
+		<h2>Orders&nbsp;Management</h2>
+		</p>
+		</div>	
 
 <div class="usersBuyGoodsdiv">
 	<table class="table table-hover userBuyGoods">

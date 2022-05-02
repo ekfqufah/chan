@@ -1,17 +1,17 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@include file= "../main/mainClass.jsp"%> 
 <!DOCTYPE html>
 	<%
 		String select = request.getParameter("pageChange");
-	
+		request.setCharacterEncoding("UTF-8");
 		 if(select == null){
 			select = "manageMember.jsp";
 		 }
 	%>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -19,7 +19,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="./../css/main.css" type = "text/css">
+	<link rel="stylesheet" href="../css/main.css" type = "text/css">
 	<link rel="stylesheet" href="../fontstyle/fontello-4581031e/css/fontello.css">
 <script src="../js/jquery.js"></script>
 <script src="../js/jquery.bxslider.js"></script>
@@ -27,7 +27,7 @@
 	$(window).scroll(function(){ 
 		
 		var scroll = $(window).scrollTop();
-		/* $("¼±ÅÃÀÚ").offset().top; *///Æ¯Á¤¿ä¼Ò y ÁÂÇ¥°ª¹İÈ¯
+		/* $("ì„ íƒì").offset().top; *///íŠ¹ì •ìš”ì†Œ y ì¢Œí‘œê°’ë°˜í™˜
 		 console.log(scroll); 
 		//var height = 114;
 		//height = height-scroll
@@ -37,7 +37,7 @@
 		if(scroll>=220 - scroll){
 			$( ".addstyle" ).addClass( "fixed");
 			$( ".addstyle1" ).addClass( "fixed1");
-			//alert("¼û°ÜÁ³À½");
+			//alert("ìˆ¨ê²¨ì¡ŒìŒ");
 		}
 		else if(scroll<=50){
 			
@@ -53,7 +53,7 @@
 	}
 	
 	
-	 $(document).mouseup(function (e){  //°Ë»ö ¿ÜÅ¬¸¯½Ã ¼û±è
+	 $(document).mouseup(function (e){  //ê²€ìƒ‰ ì™¸í´ë¦­ì‹œ ìˆ¨ê¹€
 	        if($("#searchbox").has(e.target).length == 0){
 	        	$("#searchinput").val("");
 	        	sendRequest();
@@ -85,7 +85,7 @@
  		});
  	}
 	  
-	   function selectbox(){ //°Ë»ö Å¬¸¯½Ã ¤¤Å¸³²   
+	   function selectbox(){ //ê²€ìƒ‰ í´ë¦­ì‹œ ã„´íƒ€ë‚¨   
 	        const sebox = document.getElementById('searchbox');
 	        const inbox = document.getElementById('searchinput');
 	        const hearder_title = document.getElementById('hearder_title');
@@ -107,14 +107,11 @@
       }
       #ad-content {
       	width: 1280px;
-		font-family: "Malgun Gothic",µ¸À½;
+		font-family: "Malgun Gothic",ë‹ìŒ;
         float: left;
         /* overflow-y: scroll; */
       }
       
-      a {
-	   	color: rgb(34, 34, 34);
-		}
 	.fixed{
 		position: fixed;
 		
@@ -148,6 +145,26 @@
 		max-width : 1280px;	
 		margin:auto;
 	}
+	a:link {
+	 color: rgb(34, 34, 34);
+	}
+	a:active {
+	 	 color: rgb(34, 34, 34);
+	}
+	a:visited {
+	  	 color: rgb(34, 34, 34);
+	}
+	 .headerlinks a:hover{
+ 	color:rgb(143, 143, 143);
+	 }
+	 .headernav li a:hover{
+	 	color:rgb(143, 143, 143);
+	 }
+	 .header_title a{
+	text-decoration: none;
+	color: black;
+	}
+	
 </style>
 </head>
 <body>
@@ -158,18 +175,18 @@
 			                <%
 			                	if(user_id==null){
 			                %>
-			                	<a class="nav-link active" aria-current="page" href="../login/login.jsp"> <span>&#xf2c0</span> ·Î±×ÀÎ</a>
-			                    <a class="nav-link" href="../login/register.jsp"><span></span>È¸¿ø°¡ÀÔ</a>
+			                	<a class="nav-link active" aria-current="page" href="../login/login.jsp"> <span>&#xf2c0</span> ë¡œê·¸ì¸</a>
+			                    <a class="nav-link" href="../login/register.jsp"><span></span>íšŒì›ê°€ì…</a>
 			                <%
 			                	}else{
 			                %>
-			                	<a class="nav-link active" aria-current="page" href="../login/logOut.jsp"> <span>&#xf2c0</span> ·Î±×¾Æ¿ô</a>
-			                    <a class="nav-link" href="../userPage/userPage.jsp"><span></span>¸¶ÀÌÆäÀÌÁö</a>
+			                	<a class="nav-link active" aria-current="page" href="../login/logOut.jsp"> <span>&#xf2c0</span> ë¡œê·¸ì•„ì›ƒ</a>
+			                    <a class="nav-link" href="../userPage/userPage.jsp"><span></span>ë§ˆì´í˜ì´ì§€</a>
 			                <%
 			                   if(user_id.equals("admin")){
 			             	%>
-			             		<a class="nav-link" href="../adminPage/adminPage.jsp"><span></span>°ü¸®ÆäÀÌÁö</a>
-			                    <!-- <a class="nav-link" href="../product/productAdd.jsp"><span></span>»óÇ°µî·Ï</a> -->
+			             		<a class="nav-link" href="../adminPage/adminPage.jsp"><span></span>ê´€ë¦¬í˜ì´ì§€</a>
+			                    <!-- <a class="nav-link" href="../product/productAdd.jsp"><span></span>ìƒí’ˆë“±ë¡</a> -->
 			                <%						
 								}
 			                %>
@@ -184,11 +201,11 @@
 	                <ul class="nav justify-content-end ulbox"  style="margin-bottom: 0px">
 	                	
 	                    <li class="nav-item">
-	                    	<a class="nav-link" href="../cart/viewCart.jsp"><span>&#xf218</span>Àå¹Ù±¸´Ï¸ñ·Ï</a>
+	                    	<a class="nav-link" href="../cart/viewCart.jsp"><span>&#xf218</span>ì¥ë°”êµ¬ë‹ˆëª©ë¡</a>
 	                    </li>
 	                    
 	                    <li class="nav-item">
-	                    	<a class="nav-link" href="#" onclick="selectbox()"> <span> &#xe800</span>°Ë»ö</a>
+	                    	<a class="nav-link" href="#" onclick="selectbox()"> <span> &#xe800</span>ê²€ìƒ‰</a>
 	                    </li>
 	                
 	                </ul>
@@ -200,7 +217,7 @@
 			<div class="header_titlecheck">
 	            <div class=" d-flex justify-content-center" id="hearder_title" > 
 	                <div class="header_title" style="overflow: hidden;"> 
-	                    <a href="./../main/main.jsp" style="font-size: 50px; ">elpmis</a>
+	                    <a href="../main/main.jsp" style="font-size: 50px; ">elpmis</a>
 	                </div>
 	            </div>
             </div>
@@ -224,10 +241,9 @@
 				
 				if(request.getParameter("searchCheck")!=null){
 					if(request.getParameter("searchCheck").equals("false")){
-						//System.out.println("°Ë»öÇÑ³»¿ëÀÌ¾ø½À´Ï´Ù.."+request.getParameter("searchCheck"));
+						//System.out.println("ê²€ìƒ‰í•œë‚´ìš©ì´ì—†ìŠµë‹ˆë‹¤.."+request.getParameter("searchCheck"));
 						%>
-						 	alert("°Ë»öÇÑ³»¿ëÀÌ¾ø½À´Ï´Ù..");
-						
+						 	alert("ê²€ìƒ‰í•œë‚´ìš©ì´ì—†ìŠµë‹ˆë‹¤..");
 						<%
 					}
 				}

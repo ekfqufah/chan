@@ -16,11 +16,20 @@
 		n_num = Integer.parseInt(request.getParameter("n_num"));
 	}
 	
+	
 	NoticeDBBean db = NoticeDBBean.getInstance();
 	NoticeBean board = db.getBoard(n_num, false);
 	
+	String select = request.getParameter("pageChange");
+	boolean isAdPage = true;
+	if (select == null) {
+		isAdPage = false;
+	}
 %>
+<% if(!isAdPage){ %>
 <jsp:include page="../main/mainHeader.jsp"></jsp:include>
+<% } %>
+	
 <html>
 <head>
 <meta charset="UTF-8">
@@ -56,7 +65,6 @@
 </head>
 
 <body>
-
 
 <!-- Breadcrumb 시작 -->
 <center style="font-size: 11px;">
@@ -111,15 +119,17 @@
 				</tr>
 			</table>
 			<div style="width: 1280px;">
-				<button style="float: left; font-size: 12px;" class="btn btn-outline-dark" onclick="check_ok()">글쓰기</button>
-				<input style="float: right; font-size: 12px;" type="button" value="글목록" onclick="location.href='notice_list.jsp?pageNum=<%= pageNum %>'" class="btn btn-outline-dark">
+				<input style="float: left; font-size: 12px;" type="button" value="글목록" onclick="location.href='notice_list.jsp?pageNum=<%= pageNum %>'" class="btn btn-outline-dark">
 				<input style="float: right; font-size: 12px;" type="reset" value="다시작성"  class="btn btn-outline-dark">
+				<button style="float: right; font-size: 12px;" class="btn btn-outline-dark" onclick="check_ok()">글쓰기</button>
 			</div>
 			<br><br><br><br>
 			</form>
 		</div>	
 	</center>
+<% if(!isAdPage){ %>
 <jsp:include page="../main/mainfooter.jsp"></jsp:include>
+<% } %>
 <script>
 $('.summernote').summernote({
 	  height: 500,
